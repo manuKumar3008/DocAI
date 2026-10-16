@@ -1,0 +1,270 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.19.1
+    container_name: elasticsearch
+    environment:
+      node.name: es-node
+      cluster.name: docker-cluster
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s",
+        ]
+      interval: 10s
+      timeout: 10s
+      start_period: 120s
+      retries: 10
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.19.1
+    container_name: kibana
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      XPACK_SECURITY_ENABLED: "false"
+      XPACK_FLEET_ENABLED: "false"
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  reranker:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-latest
+    container_name: bge-reranker
+    command: --model-id BAAI/bge-reranker-v2-m3
+    ports:
+      - "8010:80"
+    volumes:
+      - reranker_cache:/data
+    environment:
+      CUDA_VISIBLE_DEVICES: ""
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      start_period: 600s
+      retries: 20
+
+  ###########################################################
+  # Local Ollama \u2014 embeddings only
+  ###########################################################
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  ###########################################################
+  # Download embedding model once
+  ###########################################################
+  ollama-pull:
+    image: ollama/ollama:latest
+    container_name: ollama-pull
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      "ollama pull nomic-embed-text-v2-moe:latest"
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    restart: "no"
+    networks:
+      - app-network
+
+  ###########################################################
+  # Build WAR
+  ###########################################################
+  maven-builder:
+    image: maven:3.9-eclipse-temurin-17
+    container_name: maven-builder
+    working_dir: /app
+    command: >
+      sh -c "
+      chmod +x mvnw || true &&
+      ./mvnw clean package -DskipTests
+      "
+    volumes:
+      - .:/app
+      - maven_cache:/root/.m2
+    restart: "no"
+    networks:
+      - app-network
+
+  ###########################################################
+  # Spring Boot \u2014 Java AI backend
+  ###########################################################
+  spring-ai-app:
+    image: eclipse-temurin:17-jdk-jammy
+    container_name: spring-ai-app
+    working_dir: /app
+    command: >
+      sh -c "
+      apt-get update &&
+      apt-get install -y tesseract-ocr tesseract-ocr-eng tesseract-ocr-deu curl &&
+      echo 'Waiting for Elasticsearch...' &&
+      until curl -sf 'http://elasticsearch:9200/_cluster/health?wait_for_status=yellow&timeout=5s' >/dev/null; do
+        sleep 5;
+      done &&
+      echo 'Waiting for WAR...' &&
+      until ls /app/target/*.war >/dev/null 2>&1; do
+        sleep 3;
+      done &&
+      echo 'Starting Spring Boot...' &&
+      java -jar /app/target/*.war
+      "
+    environment:
+	    TESSDATA_PATH: /usr/share/tesseract-ocr/4.00/tessdata
+      SPRING_ELASTICSEARCH_URIS: http://elasticsearch:9200
+      RERANKER_MODEL: BAAI/bge-reranker-v2-m3
+      RERANKER_BASE_URL: http://reranker:80
+      PROJECT_BASE_URL: https://staging.bsg-services.de/serverDemo
+      PROJECT_USERNAME: admin
+      PROJECT_PASSWORD: Admin@1234
+      CORS_ALLOWED_ORIGIN_PATTERNS: "*"
+      CORS_ALLOWED_METHODS: "*"
+      CORS_ALLOWED_HEADERS: "*"
+      CORS_ALLOW_CREDENTIALS: "true"
+      CORS_MAX_AGE: "3600"
+      SERVER_PORT: "8080"
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - uploads_data:/app/uploads
+    depends_on:
+      ollama:
+        condition: service_healthy
+      ollama-pull:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 180s
+      retries: 5
+
+  ###########################################################
+  # MongoDB
+  ###########################################################
+  mongodb:
+    image: mongo:7.0
+    container_name: docflow-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: docflow
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  ###########################################################
+  # Node.js Backend
+  ###########################################################
+  docflow-backend:
+    build:
+      context: ./docflow-backend
+      dockerfile: Dockerfile
+    container_name: docflow-backend
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      MONGO_URI: mongodb://admin:admin123@mongodb:27017/docflow?authSource=admin
+      JAVA_API_BASE_URL: http://192.168.9.34:8080
+      JWT_SECRET: docflow_super_secret_jwt_key_change_this
+      JWT_EXPIRES_IN: 8h
+      UPLOAD_DIR: /app/uploads
+      MAX_FILE_SIZE_MB: 50
+      CONFIDENCE_THRESHOLD: 0.8
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  ###########################################################
+  # React Frontend
+  ###########################################################
+  docflow-frontend:
+    build:
+      context: ./docflow-frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:3000
+    container_name: docflow-frontend
+    ports:
+      - "5173:80"
+    environment:
+      VITE_API_BASE_URL: http://localhost:3000
+    depends_on:
+      - docflow-backend
+    restart: unless-stopped
+    networks:
+      - app-network
+
+volumes:
+  es_data:
+  reranker_cache:
+  maven_cache:
+  ollama_data:
+  mongodb_data:
+  uploads_data:
+
+networks:
+  app-network:
+    driver: bridge

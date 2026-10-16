@@ -1,0 +1,82 @@
+[
+  {
+    "id": "TC-SAP-01",
+    "question": "What is the primary purpose of processing personal data with SAP HR ERP?",
+    "expectedInAnswer": ["payroll", "legal", "obligations", "personnel", "administration", "reporting", "certificates", "data", "exchange", "accounting", "statistical"]
+  },
+  {
+    "id": "TC-SAP-02",
+    "question": "Which components of SAP HR ERP fall under this Works Agreement?",
+    "expectedInAnswer": ["PA", "PY", "OM", "event", "management", "annex", "other", "systems", "processing"]
+  },
+  {
+    "id": "TC-SAP-03",
+    "question": "How many annexes are part of the Works Agreement?",
+    "expectedInAnswer": ["13", "annexes", "1a", "1b", "4", "6", "8", "11", "13"]
+  },
+  {
+    "id": "TC-SAP-04",
+    "question": "Under what conditions are reports containing sensitive data permitted?",
+    "expectedInAnswer": ["annex", "4", "purpose", "recipient", "deletion", "no", "download", "abap", "adhoc", "anonymized", "controlling"]
+  },
+  {
+    "id": "TC-SAP-05",
+    "question": "How is access to data regulated?",
+    "expectedInAnswer": ["function", "restricted", "annex", "6", "logging", "no", "performance", "behavior", "monitoring", "bdsG", "annex", "3"]
+  },
+  {
+    "id": "TC-SAP-06",
+    "question": "What rights do employees have regarding their data?",
+    "expectedInAnswer": ["information", "34", "bdsG", "correction", "35", "listing", "master", "data", "consent", "printouts"]
+  },
+  {
+    "id": "TC-SAP-07",
+    "question": "What does Section 9 explicitly prohibit?",
+    "expectedInAnswer": ["medical", "psychological", "profiles", "email", "attachments", "third", "parties", "legal"]
+  },
+  {
+    "id": "TC-SAP-08",
+    "question": "Which commission is established and for what purpose?",
+    "expectedInAnswer": ["commission", "sap", "hr", "works", "council", "it", "committee", "employer", "twice", "year", "application", "development"]
+  },
+  {
+    "id": "TC-SAP-09",
+    "question": "Describe protection against rationalization and qualification measures.",
+    "expectedInAnswer": ["no", "dismissals", "transfers", "rationalization", "training", "working", "hours", "cost", "employer", "data", "protection", "works", "council", "annex", "7"]
+  },
+  {
+    "id": "TC-SAP-10",
+    "question": "When is co-determination required and what does the Works Council initiate?",
+    "expectedInAnswer": ["introduction", "change", "extension", "hardware", "software", "data", "processing", "authorization", "annex", "13", "new", "components", "agreements"]
+  },
+  {
+    "id": "TC-SAP-11",
+    "question": "What are the main goals of introducing SAP HR ERP?",
+    "expectedInAnswer": ["transparency", "clarity", "hr", "payroll", "efficiency", "effectiveness", "optimization", "workflows", "processing", "time"]
+  },
+  {
+    "id": "TC-SAP-12",
+    "question": "For what specific purposes may personal data be processed using SAP HR ERP?",
+    "expectedInAnswer": ["administration", "payroll", "legal", "reporting", "certificates", "data", "exchange", "accounting", "statistical"]
+  },
+  {
+    "id": "TC-SAP-13",
+    "question": "What does the term 'report' include in the works agreement?",
+    "expectedInAnswer": ["evaluations", "queries", "sql", "statistics", "reports"]
+  },
+  {
+    "id": "TC-SAP-14",
+    "question": "Which SAP HR ERP components are covered and what happens if data is processed by other systems?",
+    "expectedInAnswer": ["PA", "PY", "OM", "event", "management", "applies", "other", "systems"]
+  },
+  {
+    "id": "TC-SAP-15",
+    "question": "What rights do employees have regarding stored personal data?",
+    "expectedInAnswer": ["information", "listing", "master", "data", "34", "35", "bdsG", "correction", "consent", "printouts"]
+  },
+  {
+    "id": "TC-SAP-16",
+    "question": "What measures are excluded to protect employees after SAP HR ERP introduction?",
+    "expectedInAnswer": ["dismissals", "transfers", "labor", "measures", "rationalization", "excluded"]
+  }
+]

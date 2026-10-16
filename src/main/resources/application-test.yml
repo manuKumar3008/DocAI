@@ -1,0 +1,32 @@
+#spring:
+#  ai:
+#    ollama:
+#      base-url: http://localhost:11434  # Local default Ollama port
+#      embedding:
+#        model: snowflake-arctic-embed:22m
+#      chat:
+#        model: llava:7b
+#        client:
+#          enabled: true
+#          observations:
+#            log-prompt: true
+#    vectorstore:
+#      elasticsearch:
+#        initialize-schema: true
+#        index-name: test-index-v1
+#        dimensions: 768
+#        similarity: cosine
+#        embedding-field-name: textVector
+
+test:
+  image:
+    ocr:
+      enable: false   # true = use real TesseractOcrService; false = use mock
+    llm:
+      enable: false   # true = use real LlmOcrService;      false = use mock
+
+# Test-specific logging
+logging:
+  level:
+    com.bsg.ai.services: DEBUG
+    org.springframework.ai: TRACE

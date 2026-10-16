@@ -1,0 +1,3 @@
+As the preceding diagram shows, the Spring IoC container consumes a form of configuration
+metadata. This configuration metadata represents how you, as an application developer, tell the
+Spring container to instantiate, configure, and assemble the objects in your application.
