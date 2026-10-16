@@ -1,0 +1,41 @@
+# ---- Java / Maven build output ----
+target/
+*.class
+*.war
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# ---- Node ----
+node_modules/
+dist/
+coverage/
+.vite/
+npm-debug.log*
+
+# ---- Environment / secrets (use .env.example as the template) ----
+.env
+.env.*
+!.env.example
+
+# ---- Runtime data ----
+docflow-backend/uploads/
+logs/
+*.log
+
+# ---- IDE / editor / AI tooling ----
+.vscode/
+.idea/
+*.iml
+.continue/
+.claude/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+
+# ---- Python (not part of DocAI) ----
+pythonOCR/
+__pycache__/
+*.pyc
+venv/
+.venv/

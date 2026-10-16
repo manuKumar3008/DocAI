@@ -1,0 +1,52 @@
+[
+  {
+    "id": "TC-EL-01",
+    "question": "How many earned leaves are regular employees entitled to annually?",
+    "expectedInAnswer": ["18", "leaves"]
+  },
+  {
+    "id": "TC-EL-02",
+    "question": "What is the rule for leave credit when an employee joins between the 11th to 18th of the month?",
+    "expectedInAnswer": ["1"]
+  },
+  {
+    "id": "TC-EL-03",
+    "question": "What happens to unused leaves at end of the year?",
+    "expectedInAnswer": ["lapse", "carry", "forward", "6", "encashment"]
+  },
+  {
+    "id": "TC-EL-04",
+    "question": "List the national holidays mentioned for 2024-2025.",
+    "expectedInAnswer": ["Independence", "Day", "Gandhi", "Dussehra", "Diwali", "Govardhan", "Bhai Duj", "Republic", "Holi"]
+  },
+  {
+    "id": "TC-EL-05",
+    "question": "Under what conditions can weekly offs on Sunday be cancelled?",
+    "expectedInAnswer": ["management", "discretion"]
+  },
+  {
+    "id": "TC-EL-06",
+    "question": "What is the consequence of absence without intimation for more than 5 days?",
+    "expectedInAnswer": ["termination", "contract"]
+  },
+  {
+    "id": "TC-EL-07",
+    "question": "Describe the maternity leave entitlement for female employees.",
+    "expectedInAnswer": ["26", "weeks", "medical", "certificate", "full", "pay", "ESIC"]
+  },
+  {
+    "id": "TC-EL-08",
+    "question": "Who is the Vigilance Officer for whistleblower complaints, and their contact?",
+    "expectedInAnswer": ["Ramakant", "Tank", "vigilance", "email", "phone", "escalation"]
+  },
+  {
+    "id": "TC-EL-09",
+    "question": "What is the probation policy duration and purpose?",
+    "expectedInAnswer": ["6", "months", "performance", "confirmation"]
+  },
+  {
+    "id": "TC-EL-10",
+    "question": "For Slab-10 employees on outstation travel, what are the allowances?",
+    "expectedInAnswer": ["Tier", "3250", "2150", "1700", "return", "DA", "1060"]
+  }
+]

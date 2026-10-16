@@ -1,0 +1,124 @@
+spring:
+  application:
+    name: spring-ai
+
+  config:
+    import: classpath:prompt.properties
+
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=1h
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  elasticsearch:
+    uris: ${SPRING_ELASTICSEARCH_URIS:http://192.168.9.34:9200}
+
+  ai:
+    mistralai:
+      api-key: ${MISTRAL_API_KEY}
+
+      chat:
+        options:
+          model: mistral-small-latest
+          temperature: 0.25
+
+      embedding:
+        options:
+          model: mistral-embed
+
+    vectorstore:
+      elasticsearch:
+        dimensions: ${VECTORSTORE_DIMENSIONS:1024}
+
+##############################################################
+# Retrieval Augmented Generation
+##############################################################
+
+rag:
+  retriever:
+    top-k: 10
+    similarity-threshold: 0.40
+
+  reranker:
+    top-n: 7
+    model: ${RERANKER_MODEL:BAAI/bge-reranker-v2-m3}
+    base-url: ${RERANKER_BASE_URL:http://192.168.9.34:8010}
+
+  query:
+    expand-enabled: false
+    expand-count: 3
+    rewrite-enabled: false
+
+  context:
+    multiDocTopK: 80
+    maxContextChunks: 20
+    maxCharsPerChunk: 5000
+
+##############################################################
+# OCR
+##############################################################
+
+system:
+  ocr:
+    tessaract:
+      characterdatapath: ${TESSDATA_PATH:/usr/share/tesseract-ocr/4.00/tessdata}
+      enginemode: 1
+      contentlang: eng+deu
+
+##############################################################
+# External APIs
+##############################################################
+
+external-apis:
+  project:
+    url: ${PROJECT_BASE_URL:https://staging.bsg-services.de/serverDemo}
+    username: ${PROJECT_USERNAME:admin}
+    password: ${PROJECT_PASSWORD:Admin@1234}
+
+##############################################################
+# Document Ingestion
+##############################################################
+
+ingestion:
+  reader-threads: 4
+  chunking-threads: 6
+  max-concurrent-batch-adds: 2
+  buffer-limit: 8000
+
+##############################################################
+# CORS
+##############################################################
+
+cors:
+  allowed-origin-patterns: ${CORS_ALLOWED_ORIGIN_PATTERNS:*}
+  allowed-methods: ${CORS_ALLOWED_METHODS:*}
+  allowed-headers: ${CORS_ALLOWED_HEADERS:*}
+  allow-credentials: ${CORS_ALLOW_CREDENTIALS:true}
+  max-age: ${CORS_MAX_AGE:3600}
+##############################################################
+# App Custom Storage
+##############################################################
+
+app:
+  storage:
+    base-dir: ${APP_STORAGE_BASE_DIR:D:/DocAI/docflow-backend}
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+logging:
+  charset:
+    console: UTF-8
+    file: UTF-8
+qna:
+  clarifying-followup:
+    enabled: true

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- Registers Spring Boot Logback extensions: %clr, %wEx and default patterns -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- =========================================================
+         Properties
+         ========================================================= -->
+    <property name="LOG_DIR"          value="logs"/>
+    <property name="APP_LOG_FILE"     value="${LOG_DIR}/app"/>
+    <property name="TRACER_LOG_FILE"  value="${LOG_DIR}/elasticsearch-tracer"/>
+
+    <!-- Max size before a file is rolled within the same day -->
+    <property name="MAX_FILE_SIZE"    value="20MB"/>
+    <!-- How many days of rolled files to keep -->
+    <property name="APP_HISTORY"      value="30"/>
+    <property name="TRACER_HISTORY"   value="7"/>
+    <!-- Total size cap across all rolled files -->
+    <property name="APP_TOTAL_CAP"    value="1GB"/>
+    <property name="TRACER_TOTAL_CAP" value="500MB"/>
+
+    <!-- Log patterns -->
+    <property name="CONSOLE_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%ex"/>
+    <property name="FILE_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%15.15t] %-40.40logger{39} : %m%n%ex"/>
+
+
+    <!-- =========================================================
+         Appenders
+         ========================================================= -->
+
+    <!-- Console — coloured, active in all profiles -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Application rolling file — all non-tracer logs -->
+    <appender name="APP_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${APP_LOG_FILE}.log</file>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- Daily roll + size cap: app.2025-04-10.0.log, app.2025-04-10.1.log … -->
+            <fileNamePattern>${APP_LOG_FILE}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${APP_HISTORY}</maxHistory>
+            <totalSizeCap>${APP_TOTAL_CAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Elasticsearch tracer rolling file — ES wire-level HTTP logs only -->
+    <appender name="TRACER_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${TRACER_LOG_FILE}.log</file>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${TRACER_LOG_FILE}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${TRACER_HISTORY}</maxHistory>
+            <totalSizeCap>${TRACER_TOTAL_CAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Async wrappers — prevent I/O from blocking request threads -->
+    <appender name="ASYNC_APP_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="APP_FILE"/>
+        <queueSize>512</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>false</includeCallerData>
+    </appender>
+
+    <appender name="ASYNC_TRACER_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="TRACER_FILE"/>
+        <queueSize>1024</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>false</includeCallerData>
+    </appender>
+
+
+    <!-- =========================================================
+         Loggers  (mirror application.yml logging.level.*)
+         ========================================================= -->
+
+    <!-- Application packages -->
+    <logger name="com.bsg.ai.services"
+            level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_APP_FILE"/>
+    </logger>
+
+    <logger name="com.bsg.ai.services.extraction.filter.service.OllamaService"
+            level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_APP_FILE"/>
+    </logger>
+
+    <logger name="com.bsg.ai.services.extraction.filter.service.ExternalAPIService"
+            level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_APP_FILE"/>
+    </logger>
+
+    <!-- Spring AI — all modules at DEBUG -->
+    <logger name="org.springframework.ai"
+            level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_APP_FILE"/>
+    </logger>
+
+    <!-- RAG retrieval: logs each chunk returned by QuestionAnswerAdvisor at TRACE.
+         additivity=false so these don't double-log via the parent org.springframework.ai logger. -->
+    <logger name="org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor"
+            level="TRACE" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_APP_FILE"/>
+    </logger>
+
+    <!-- Elasticsearch HTTP wire tracer — routed exclusively to its own file.
+         Vectors (768 floats) and full request/response bodies appear here.
+         Set level to DEBUG or OFF to reduce noise once confirmed working. -->
+    <logger name="tracer"
+            level="TRACE" additivity="false">
+        <appender-ref ref="ASYNC_TRACER_FILE"/>
+    </logger>
+
+
+    <!-- =========================================================
+         Profile-specific overrides
+         ========================================================= -->
+
+    <!-- test profile: suppress verbose Spring AI and tracer noise on CI -->
+    <springProfile name="test">
+        <logger name="org.springframework.ai" level="WARN" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor"
+                level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="tracer" level="OFF" additivity="false"/>
+        <logger name="com.bsg.ai.services" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+    </springProfile>
+
+
+    <!-- =========================================================
+         Root logger
+         ========================================================= -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_APP_FILE"/>
+    </root>
+
+</configuration>

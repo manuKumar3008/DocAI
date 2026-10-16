@@ -1,0 +1,82 @@
+[
+  {
+    "id": "TC-SAP-DE-01",
+    "question": "Was ist der primäre Zweck der Verarbeitung personenbezogener Daten mit SAP HR ERP?",
+    "expectedInAnswer": ["entgeltabrechnung", "gesetzlich", "verpflichtungen", "personaladministration", "meldepflichten", "bescheinigungen", "datenträgeraustausch", "rechnungswesen", "statistische"]
+  },
+  {
+    "id": "TC-SAP-DE-02",
+    "question": "Welche Komponenten von SAP HR ERP fallen unter diese Betriebsvereinbarung?",
+    "expectedInAnswer": ["pa", "py", "om", "veranstaltungsmanagement", "anlage", "andere", "systeme", "weiterverarbeitung"]
+  },
+  {
+    "id": "TC-SAP-DE-03",
+    "question": "Wie viele Anlagen sind Bestandteil der Betriebsvereinbarung?",
+    "expectedInAnswer": ["13", "anlagen", "1a", "1b", "4", "6", "8", "11", "13"]
+  },
+  {
+    "id": "TC-SAP-DE-04",
+    "question": "Unter welchen Bedingungen sind Berichte mit schutzwürdigen Daten erlaubt?",
+    "expectedInAnswer": ["anlage", "4", "zweck", "empfängerkreis", "löschfristen", "keine", "downloads", "abap", "adhoc", "anonymisiert", "controlling"]
+  },
+  {
+    "id": "TC-SAP-DE-05",
+    "question": "Wie wird der Zugriff auf Daten geregelt?",
+    "expectedInAnswer": ["funktionsorientiert", "beschränkt", "anlage", "6", "protokollierung", "keine", "leistungs", "verhaltenskontrolle", "bdsG", "anlage", "3"]
+  },
+  {
+    "id": "TC-SAP-DE-06",
+    "question": "Welche Rechte haben Beschäftigte bezüglich ihrer Daten?",
+    "expectedInAnswer": ["auskunft", "34", "bdsG", "berichtigung", "35", "stammdaten", "auflistung", "zustimmung", "ausdrucke"]
+  },
+  {
+    "id": "TC-SAP-DE-07",
+    "question": "Was verbietet Ziffer 9 zum Datenschutz explizit?",
+    "expectedInAnswer": ["medizinisch", "psychologisch", "persönlichkeitsprofile", "email", "anhänge", "dritte", "gesetzlich"]
+  },
+  {
+    "id": "TC-SAP-DE-08",
+    "question": "Welche Kommission wird eingerichtet und zu welchem Zweck?",
+    "expectedInAnswer": ["kommission", "sap", "hr", "betriebsrat", "it", "ausschuss", "arbeitgeber", "zweimal", "jahr", "anwendung", "weiterentwicklung"]
+  },
+  {
+    "id": "TC-SAP-DE-09",
+    "question": "Beschreibe den Rationalisierungsschutz und Qualifizierungsmaßnahmen.",
+    "expectedInAnswer": ["keine", "kündigungen", "versetzungen", "rationalisierung", "qualifizierung", "arbeitszeit", "kosten", "arbeitgeber", "datenschutz", "betriebsrat", "anlage", "7"]
+  },
+  {
+    "id": "TC-SAP-DE-10",
+    "question": "Wann ist Mitbestimmung erforderlich und was initiiert der Betriebsrat?",
+    "expectedInAnswer": ["einführung", "änderung", "erweiterung", "hardware", "software", "datenverarbeitung", "berechtigungen", "anlage", "13", "komponenten", "vereinbarung"]
+  },
+  {
+    "id": "TC-SAP-DE-11",
+    "question": "Was sind die Hauptziele der Einführung von SAP HR ERP?",
+    "expectedInAnswer": ["transparenz", "klarheit", "personalverwaltung", "abrechnung", "effizienz", "effektivität", "optimierung", "abläufe", "bearbeitungszeiten"]
+  },
+  {
+    "id": "TC-SAP-DE-12",
+    "question": "Für welche konkreten Zwecke dürfen personenbezogene Daten verarbeitet werden?",
+    "expectedInAnswer": ["personaladministration", "entgeltabrechnung", "meldepflichten", "bescheinigungen", "datenträgeraustausch", "rechnungswesen", "statistische"]
+  },
+  {
+    "id": "TC-SAP-DE-13",
+    "question": "Was versteht die Betriebsvereinbarung unter dem Begriff Bericht?",
+    "expectedInAnswer": ["auswertungen", "abfragen", "queries", "sql", "statistiken", "reports"]
+  },
+  {
+    "id": "TC-SAP-DE-14",
+    "question": "Welche Komponenten werden abgedeckt und was gilt bei Verarbeitung durch andere Systeme?",
+    "expectedInAnswer": ["pa", "py", "om", "veranstaltungsmanagement", "gilt", "andere", "systeme"]
+  },
+  {
+    "id": "TC-SAP-DE-15",
+    "question": "Welche Rechte haben Beschäftigte bezüglich gespeicherter personenbezogener Daten?",
+    "expectedInAnswer": ["information", "auflistung", "stammdaten", "34", "35", "bdsG", "berichtigung", "zustimmung", "ausdrucke"]
+  },
+  {
+    "id": "TC-SAP-DE-16",
+    "question": "Welche Maßnahmen sind zum Schutz der Beschäftigten ausgeschlossen?",
+    "expectedInAnswer": ["kündigungen", "versetzungen", "arbeitsrechtliche", "maßnahmen", "rationalisierung", "ausgeschlossen"]
+  }
+]

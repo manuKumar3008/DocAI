@@ -1,0 +1,117 @@
+[
+  {
+    "id": "TC-HR-01",
+    "question": "What is the standard probationary period for new appointments?",
+    "expectedInAnswer": ["six", "calendar", "months", "review", "three", "extend"]
+  },
+  {
+    "id": "TC-HR-02",
+    "question": "How are shortlisted candidates selected for interviews?",
+    "expectedInAnswer": ["merit", "suitability", "disability", "equalities", "essential", "criteria", "interviewed"]
+  },
+  {
+    "id": "TC-HR-03",
+    "question": "What is the maximum value of gifts employees can accept from suppliers?",
+    "expectedInAnswer": ["trivial", "10", "calendar", "diary", "chocolates", "declined", "returned"]
+  },
+  {
+    "id": "TC-HR-04",
+    "question": "Outline the interview panel composition and scoring process.",
+    "expectedInAnswer": ["three", "minimum", "two", "gender", "balanced", "HR", "questions", "same", "order", "1-10", "independent", "scores", "discussed"]
+  },
+  {
+    "id": "TC-HR-05",
+    "question": "What checks are conditional for all job offers?",
+    "expectedInAnswer": ["two", "references", "right", "work", "criminal", "records", "disclosure"]
+  },
+  {
+    "id": "TC-HR-06",
+    "question": "Describe the stages of the absence control procedure.",
+    "expectedInAnswer": ["stages", "procedure", "return", "work", "interview", "appeals", "checklist", "form"]
+  },
+  {
+    "id": "TC-HR-07",
+    "question": "Who selects the Chief Executive, and what is the panel setup?",
+    "expectedInAnswer": ["board", "members", "chairman"]
+  },
+  {
+    "id": "TC-HR-08",
+    "question": "What must employees do if a personal relationship develops in the workplace?",
+    "expectedInAnswer": ["senior", "employee", "inform", "manager", "conflict", "interest"]
+  },
+  {
+    "id": "TC-HR-09",
+    "question": "List key benefits of an effective induction process.",
+    "expectedInAnswer": ["settle", "productive", "motivation", "reduce", "turnover", "absenteeism", "performance", "safe", "environment", "costs"]
+  },
+  {
+    "id": "TC-HR-10",
+    "question": "What rules apply to accepting invitations to luncheons/receptions?",
+    "expectedInAnswer": ["approval", "department", "manager", "report", "immediately", "transfer", "consent", "outside", "hours", "authority", "decline"]
+  },
+  {
+    "id": "TC-HR-11",
+    "question": "What is the standard duration of the probationary period for all new appointments?",
+    "expectedInAnswer": ["six", "calendar", "months"]
+  },
+  {
+    "id": "TC-HR-12",
+    "question": "Under what circumstances might the Company restrict a job advertisement to internal candidates only?",
+    "expectedInAnswer": ["junior", "internal", "development", "specialist", "skills", "discretion"]
+  },
+  {
+    "id": "TC-HR-13",
+    "question": "What are the requirements regarding the composition of an interview panel?",
+    "expectedInAnswer": ["three", "minimum", "two", "gender", "balanced"]
+  },
+  {
+    "id": "TC-HR-14",
+    "question": "How long does the Company retain the records of unsuccessful candidates?",
+    "expectedInAnswer": ["one", "year", "application", "forms", "interview", "notes"]
+  },
+  {
+    "id": "TC-HR-15",
+    "question": "What are the primary concerns for new employees on their first day?",
+    "expectedInAnswer": ["job", "do", "colleagues"]
+  },
+  {
+    "id": "TC-HR-16",
+    "question": "What additional guidance should a school leaver receive during induction?",
+    "expectedInAnswer": ["career", "planning", "qualifications", "routine", "discipline", "work", "money"]
+  },
+  {
+    "id": "TC-HR-17",
+    "question": "Who is responsible for filing the induction checklist?",
+    "expectedInAnswer": ["manager", "supervisor", "personnel", "department", "head", "office", "file"]
+  },
+  {
+    "id": "TC-HR-18",
+    "question": "How does the manual define a bribe?",
+    "expectedInAnswer": ["financial", "advantage", "improperly", "reward"]
+  },
+  {
+    "id": "TC-HR-19",
+    "question": "What is the maximum value of a trivial gift that may be accepted?",
+    "expectedInAnswer": ["less", "10", "nominal"]
+  },
+  {
+    "id": "TC-HR-20",
+    "question": "Who must report a personal relationship between employees?",
+    "expectedInAnswer": ["senior", "employee", "report"]
+  },
+  {
+    "id": "TC-HR-21",
+    "question": "What is the employee's duty regarding trade secrets?",
+    "expectedInAnswer": ["duty", "respect", "trade", "secrets"]
+  },
+  {
+    "id": "TC-HR-22",
+    "question": "What if an employee cannot get prior approval for a luncheon invitation?",
+    "expectedInAnswer": ["report", "immediately", "after"]
+  },
+  {
+    "id": "TC-HR-23",
+    "question": "What is the policy regarding interviewing a relative?",
+    "expectedInAnswer": ["no", "manager", "interview", "relative"]
+  }
+]

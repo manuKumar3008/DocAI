@@ -1,0 +1,13 @@
+Your Business Objects (POJOs)
+Configuration Metadata
+The Spring Container
+produces
+Fully configured system
+Ready for Use
+Figure 1. The Spring IoC container
+Configuration Metadata
+As the preceding diagram shows, the Spring IoC container consumes a form of configuration
+metadata. This configuration metadata represents how you, as an application developer, tell the
+Spring container to instantiate, configure, and assemble the objects in your application.
+Configuration metadata is traditionally supplied in a simple and intuitive XML format, which is
+what most of this chapter uses to convey key concepts and features of the Spring IoC container.
